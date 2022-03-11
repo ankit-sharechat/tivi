@@ -238,26 +238,6 @@ private fun NavGraphBuilder.addDiscover(
     }
 }
 
-@Composable
-fun TestCompose() {
-    var counter by remember {
-        mutableStateOf(0)
-    }
-
-    val scope  = rememberCoroutineScope()
-    LaunchedEffect(key1 = Unit) {
-        scope.launch {
-            repeat(100) {
-                counter += 1
-                delay(100)
-            }
-        }
-    }
-
-    Text(text = "$counter")
-    LogCompositions(tag = "TestCompose")
-}
-
 @ExperimentalAnimationApi
 private fun NavGraphBuilder.addFollowedShows(
     navController: NavController,

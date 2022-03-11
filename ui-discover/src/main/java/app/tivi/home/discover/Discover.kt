@@ -50,6 +50,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.FirstBaseline
@@ -86,6 +90,27 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import dev.chrisbanes.snapper.ExperimentalSnapperApi
 import dev.chrisbanes.snapper.SnapOffsets
 import dev.chrisbanes.snapper.rememberSnapperFlingBehavior
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+
+@Composable
+fun TestCompose() {
+    LogCompositions(tag = "TestCompose")
+    var counter by remember {
+        mutableStateOf(0)
+    }
+
+    val scope = rememberCoroutineScope()
+    LaunchedEffect(key1 = Unit) {
+        scope.launch {
+            repeat(100) {
+                counter += 1
+                delay(100)
+            }
+        }
+    }
+    Text(text = "$counter")
+}
 
 @Composable
 fun Discover(
@@ -96,6 +121,19 @@ fun Discover(
     openUser: () -> Unit,
 ) {
     LogCompositions(tag = "DiscoverScreen ${openTrendingShows.hashCode()} ${openPopularShows.hashCode()}")
+    var counter by remember {
+        mutableStateOf(0)
+    }
+    val scope = rememberCoroutineScope()
+    LaunchedEffect(key1 = Unit) {
+        scope.launch {
+            repeat(100) {
+                counter += 1
+                delay(100)
+            }
+        }
+    }
+    TestText { "$counter" }
     Discover(
         viewModel = hiltViewModel(),
         openTrendingShows = openTrendingShows,
@@ -104,6 +142,12 @@ fun Discover(
         openShowDetails = openShowDetails,
         openUser = openUser,
     )
+}
+
+@Composable
+fun TestText(text: () -> String) {
+    LogCompositions(tag = "TestText")
+    Text(text = text())
 }
 
 @Composable
@@ -316,7 +360,7 @@ private fun <T : EntryWithShow<*>> CarouselWithHeader(
     refreshing: Boolean,
     onItemClick: (TiviShow) -> Unit,
     onMoreClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(modifier) {
         if (refreshing || items.isNotEmpty()) {
@@ -356,7 +400,7 @@ private fun <T : EntryWithShow<*>> CarouselWithHeader(
 private fun <T : EntryWithShow<*>> EntryShowCarousel(
     items: List<T>,
     onItemClick: (TiviShow) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val lazyListState = rememberLazyListState()
     val contentPadding = PaddingValues(horizontal = Layout.bodyMargin, vertical = Layout.gutter)
@@ -395,7 +439,7 @@ private fun Header(
     title: String,
     modifier: Modifier = Modifier,
     loading: Boolean = false,
-    content: @Composable RowScope.() -> Unit = {}
+    content: @Composable RowScope.() -> Unit = {},
 ) {
     Row(modifier) {
         Spacer(Modifier.width(Layout.bodyMargin))
@@ -432,7 +476,7 @@ private fun DiscoverAppBar(
     refreshing: Boolean,
     onRefreshActionClick: () -> Unit,
     onUserActionClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     TopAppBar(
         backgroundColor = MaterialTheme.colors.surface.copy(
