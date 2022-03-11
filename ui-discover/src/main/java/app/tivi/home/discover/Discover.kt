@@ -60,6 +60,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import app.tivi.common.compose.Layout
 import app.tivi.common.compose.LocalTiviTextCreator
+import app.tivi.common.compose.LogCompositions
 import app.tivi.common.compose.bodyWidth
 import app.tivi.common.compose.rememberStateWithLifecycle
 import app.tivi.common.compose.theme.AppBarAlphas
@@ -94,6 +95,7 @@ fun Discover(
     openShowDetails: (showId: Long, seasonId: Long?, episodeId: Long?) -> Unit,
     openUser: () -> Unit,
 ) {
+    LogCompositions(tag = "DiscoverScreen ${openTrendingShows.hashCode()} ${openPopularShows.hashCode()}")
     Discover(
         viewModel = hiltViewModel(),
         openTrendingShows = openTrendingShows,

@@ -22,7 +22,14 @@ import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
@@ -34,6 +41,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import app.tivi.account.AccountUi
+import app.tivi.common.compose.LogCompositions
 import app.tivi.episodedetails.EpisodeDetails
 import app.tivi.home.discover.Discover
 import app.tivi.home.followed.Followed
@@ -46,6 +54,8 @@ import app.tivi.showdetails.details.ShowDetails
 import app.tivi.showdetails.seasons.ShowSeasons
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.navigation
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 internal sealed class Screen(val route: String) {
     object Discover : Screen("discover")
@@ -226,6 +236,26 @@ private fun NavGraphBuilder.addDiscover(
             },
         )
     }
+}
+
+@Composable
+fun TestCompose() {
+    var counter by remember {
+        mutableStateOf(0)
+    }
+
+    val scope  = rememberCoroutineScope()
+    LaunchedEffect(key1 = Unit) {
+        scope.launch {
+            repeat(100) {
+                counter += 1
+                delay(100)
+            }
+        }
+    }
+
+    Text(text = "$counter")
+    LogCompositions(tag = "TestCompose")
 }
 
 @ExperimentalAnimationApi

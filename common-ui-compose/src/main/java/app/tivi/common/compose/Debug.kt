@@ -38,9 +38,9 @@ const val EnableDebugCompositionLogs = false
  */
 @Composable
 inline fun LogCompositions(tag: String) {
-    if (EnableDebugCompositionLogs && BuildConfig.DEBUG) {
+  //  if (EnableDebugCompositionLogs && BuildConfig.DEBUG) {
         val ref = remember { Ref(0) }
         SideEffect { ref.value++ }
         Log.d(tag, "Compositions: ${ref.value}")
-    }
+  //  }
 }
